@@ -98,6 +98,12 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                   href: "tel:+9779851061880",
                 },
                 {
+                  icon: Phone,
+                  label: "Phone",
+                  value: "+977 9860282933",
+                  href: "tel:+9779860282933",
+                },
+                {
                   icon: MapPin,
                   label: "Location",
                   value: "Kathmandu, Nepal",
