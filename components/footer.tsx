@@ -71,11 +71,11 @@ export function Footer() {
 
             <Link href="#home" className="flex items-center gap-4">
 
-              <div className="bg-white rounded-full p-1 shadow-md">
+              <div className="h-20 w-20 overflow-hidden rounded-full bg-white p-1 shadow-md">
                 <img
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/20b9c957-6fa3-44f2-a4fe-8f57d94dad11.JPG-D0iPDwQKibG3xXHKopLWowmTi5a3O1.jpeg"
                   alt="Herbs & Organic circular gold logo"
-                  className="h-20 w-20 rounded-full object-cover"
+                  className="h-full w-full scale-[1.35] rounded-full object-cover"
                 />
               </div>
 
