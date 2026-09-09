@@ -4,8 +4,16 @@ import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
 import { X, Facebook, ExternalLink } from "lucide-react"
+import { resolveImageSrc } from "@/sanity/lib/image"
 
-const galleryImages = [
+type SanityGalleryImage = {
+  _id: string
+  image?: any
+  alt: string
+  category?: string
+}
+
+const fallbackGalleryImages = [
   {
     id: 1,
     src: "/gallery-herbs-1.jpg",
@@ -43,9 +51,30 @@ const galleryImages = [
   },
 ]
 
-export function Gallery() {
+export function Gallery({
+  images: sanityImages,
+}: {
+  images?: SanityGalleryImage[] | null
+}) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+
+  const galleryImages =
+    sanityImages && sanityImages.length > 0
+      ? sanityImages.map((img, i) => ({
+          id: img._id,
+          src: resolveImageSrc(img.image, "/placeholder.jpg"),
+          alt: img.alt,
+          category: img.category || "",
+          span:
+            i === 0
+              ? "lg:col-span-2 lg:row-span-2"
+              : i === 3
+                ? "lg:row-span-2"
+                : "",
+        }))
+      : fallbackGalleryImages
+
   const [selectedImage, setSelectedImage] =
     useState<(typeof galleryImages)[0] | null>(null)
 

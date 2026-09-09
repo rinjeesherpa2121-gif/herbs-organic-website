@@ -5,7 +5,32 @@ import { useInView } from "framer-motion"
 import { useRef, useState, type FormEvent } from "react"
 import { Mail, Phone, MapPin, Send, CheckCircle, Facebook, MessageCircle } from "lucide-react"
 
-export function Contact() {
+type ContactInfoData = {
+  email?: string
+  phone?: string
+  whatsappNumber?: string
+  location?: string
+  facebookUrl?: string
+  tiktokUrl?: string
+}
+
+const fallbackInfo = {
+  email: "herbsandorganic55@gmail.com",
+  phone: "+977 9851357595",
+  whatsappNumber: "9779851357595",
+  location: "Kathmandu, Nepal",
+  facebookUrl: "https://www.facebook.com/herbs.and.organic.2024",
+  tiktokUrl: "https://www.tiktok.com/@herbs.and.organic7",
+}
+
+export function Contact({ info }: { info?: ContactInfoData | null }) {
+  const email = info?.email || fallbackInfo.email
+  const phone = info?.phone || fallbackInfo.phone
+  const whatsappNumber = info?.whatsappNumber || fallbackInfo.whatsappNumber
+  const location = info?.location || fallbackInfo.location
+  const facebookUrl = info?.facebookUrl || fallbackInfo.facebookUrl
+  const tiktokUrl = info?.tiktokUrl || fallbackInfo.tiktokUrl
+
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -88,25 +113,19 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                 {
                   icon: Mail,
                   label: "Email",
-                  value: "herbsandorganic55@gmail.com",
-                  href: "mailto:herbsandorganic55@gmail.com",
+                  value: email,
+                  href: `mailto:${email}`,
                 },
                 {
                   icon: Phone,
                   label: "Phone",
-                  value: "+977 9851061880",
-                  href: "tel:+9779851061880",
-                },
-                {
-                  icon: Phone,
-                  label: "Phone",
-                  value: "+977 9860282933",
-                  href: "tel:+9779860282933",
+                  value: phone,
+                  href: `tel:${phone.replace(/\s+/g, "")}`,
                 },
                 {
                   icon: MapPin,
                   label: "Location",
-                  value: "Kathmandu, Nepal",
+                  value: location,
                   href: "#",
                 },
               ].map((item) => (
@@ -135,7 +154,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 
               <div className="flex gap-3">
                 <a
-                  href="https://www.facebook.com/herbs.and.organic.2024"
+                  href={facebookUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
@@ -145,7 +164,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                 </a>
 
                 <a
-  href="https://wa.me/9779851061880"
+  href={`https://wa.me/${whatsappNumber}`}
   target="_blank"
   rel="noopener noreferrer"
   aria-label="WhatsApp"
@@ -154,7 +173,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
   <MessageCircle className="w-5 h-5 text-primary group-hover:text-primary-foreground" />
 </a>
 <a
-  href="https://www.tiktok.com/@herbs.and.organic7"
+  href={tiktokUrl}
   target="_blank"
   rel="noopener noreferrer"
   className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors text-sm"

@@ -3,10 +3,42 @@
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
+import { resolveImageSrc } from "@/sanity/lib/image"
 
-export function About() {
+type AboutData = {
+  heading?: string
+  image?: any
+  paragraphs?: string[]
+  floatingCardText?: string
+  statValue?: string
+  statLabel?: string
+}
+
+const fallback = {
+  heading: "Our Story",
+  image: "/image2.jpg",
+  paragraphs: [
+    "Nestled in the foothills of the majestic Himalayas, Herbs and Organics has been involved in sourcing and trading natural wild herbs for generations. We work closely with local collectors and mountain communities to gather authentic medicinal herbs found across Nepal’s highlands and forests.",
+    "Our herbs are carefully cleaned, sun dried, and prepared using both traditional methods and modern dehydration technology to preserve their natural quality and potency. We supply raw medicinal herbs to Nepal’s local retail and wholesale markets while also exporting internationally to countries including India and China. We offer a wide variety of Himalayan medicinal herbs, roots, flowers, and botanicals used in traditional wellness practices. Alongside raw herbs, we also specialize in wild herbal teas, including varieties such as wild dandelion and Anoectochilus. By combining traditional Himalayan harvesting practices with modern processing techniques, our mission is to bring the purity of Nepal’s natural herbs to local and international markets.",
+  ],
+  floatingCardText: "Locally Sourced • Globally Supplied",
+  statValue: "Retail • Wholesale • Export",
+  statLabel: "India • Nepal • China",
+}
+
+export function About({ data }: { data?: AboutData | null }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+
+  const heading = data?.heading || fallback.heading
+  const paragraphs =
+    data?.paragraphs && data.paragraphs.length > 0
+      ? data.paragraphs
+      : fallback.paragraphs
+  const floatingCardText = data?.floatingCardText || fallback.floatingCardText
+  const statValue = data?.statValue || fallback.statValue
+  const statLabel = data?.statLabel || fallback.statLabel
+  const imageSrc = resolveImageSrc(data?.image, fallback.image)
 
   return (
     <section id="about" className="py-24 lg:py-32 bg-background">
@@ -20,8 +52,8 @@ export function About() {
             className="relative"
           >
             <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
-              <img 
-                src="/image2.jpg"
+              <img
+                src={imageSrc}
                 alt="Traditional herb preparation in Nepal"
                 className="w-full h-full object-cover"
               />
@@ -47,9 +79,8 @@ export function About() {
                 </div>
                 <div>
                   <p className="font-serif text-2xl font-semibold text-foreground">
-                    Locally Sourced • Globally Supplied
+                    {floatingCardText}
                   </p>
-        
                 </div>
               </div>
             </motion.div>
@@ -63,39 +94,27 @@ export function About() {
             className="space-y-8"
           >
             <div className="space-y-4">
-              <span className="text-sm font-medium text-primary uppercase tracking-widest">
-                
-              </span>
               <h2 className="font-serif text-4xl lg:text-5xl font-medium text-foreground leading-tight text-balance">
-                Our Story
+                {heading}
               </h2>
             </div>
 
             <div className="space-y-6 text-muted-foreground leading-relaxed">
-              <p>
-                Nestled in the foothills of the majestic Himalayas, Herbs and Organics
-                has been involved in sourcing and trading natural wild herbs for generations. We work closely with local collectors and mountain communities to gather authentic medicinal herbs found across Nepal’s highlands and forests.
-              </p>
-              <p>
-                Our herbs are carefully cleaned, sun dried, and prepared using both traditional methods and modern dehydration technology to preserve their natural quality and potency. We supply raw medicinal herbs to Nepal’s local retail and wholesale markets while also exporting internationally to countries including India and China. We offer a wide variety of Himalayan medicinal herbs, roots, flowers, and botanicals used in traditional wellness practices. Alongside raw herbs, we also specialize in wild herbal teas, including varieties such as wild dandelion and Anoectochilus. By combining traditional Himalayan harvesting practices with modern processing techniques, our mission is to bring the purity of Nepal’s natural herbs to local and international markets. 
-              </p>
-              
+              {paragraphs.map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-8 pt-8 border-t border-border">
-              {[
-                { value: "Retail • Wholesale • Export", label: "India • Nepal • China" },
-              ].map((stat) => (
-                <div key={stat.label}>
-                  <p className="font-serif text-2xl lg:text-3xl font-semibold text-foreground whitespace-nowrap">
-                    {stat.value}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
+              <div>
+                <p className="font-serif text-2xl lg:text-3xl font-semibold text-foreground whitespace-nowrap">
+                  {statValue}
+                </p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  {statLabel}
+                </p>
+              </div>
             </div>
           </motion.div>
         </div>

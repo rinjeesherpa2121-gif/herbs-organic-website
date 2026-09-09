@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef, useState } from "react"
 import { ArrowRight, X } from "lucide-react"
+import { resolveImageSrc } from "@/sanity/lib/image"
 
 const categories = [
   { id: "all", name: "All Products" },
@@ -15,7 +16,7 @@ const categories = [
 ]
 
 type Product = {
-  id: number
+  id: string | number
   name: string
   scientificName: string
   category: string
@@ -28,7 +29,21 @@ type Product = {
   badge: string
 }
 
-const products: Product[] = [
+type SanityProduct = {
+  _id: string
+  name: string
+  scientificName?: string
+  category: string
+  categoryLabel?: string
+  description?: string
+  traditionalUse?: string
+  preparation?: string
+  availability?: string
+  image?: any
+  badge?: string
+}
+
+const fallbackProducts: Product[] = [
   {
     id: 1,
     name: "Khiraula",
@@ -336,11 +351,32 @@ const products: Product[] = [
   },
 ]
 
-export function Products() {
+export function Products({
+  products: sanityProducts,
+}: {
+  products?: SanityProduct[] | null
+}) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
   const [activeCategory, setActiveCategory] = useState("all")
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+
+  const products: Product[] =
+    sanityProducts && sanityProducts.length > 0
+      ? sanityProducts.map((p) => ({
+          id: p._id,
+          name: p.name,
+          scientificName: p.scientificName || "",
+          category: p.category,
+          categoryLabel: p.categoryLabel || "",
+          description: p.description || "",
+          traditionalUse: p.traditionalUse || "",
+          preparation: p.preparation || "",
+          availability: p.availability || "",
+          badge: p.badge || "",
+          image: resolveImageSrc(p.image, "/placeholder.jpg"),
+        }))
+      : fallbackProducts
 
   const filteredProducts =
     activeCategory === "all"
