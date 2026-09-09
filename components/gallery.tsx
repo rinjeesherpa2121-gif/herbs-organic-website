@@ -59,21 +59,35 @@ export function Gallery({
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
-  const galleryImages =
-    sanityImages && sanityImages.length > 0
-      ? sanityImages.map((img, i) => ({
-          id: img._id,
-          src: resolveImageSrc(img.image, "/placeholder.jpg"),
-          alt: img.alt,
-          category: img.category || "",
-          span:
-            i === 0
-              ? "lg:col-span-2 lg:row-span-2"
-              : i === 3
-                ? "lg:row-span-2"
-                : "",
-        }))
-      : fallbackGalleryImages
+  const sanityMapped =
+    sanityImages?.map((img, i) => ({
+      id: img._id,
+      src: resolveImageSrc(img.image, "/placeholder.jpg"),
+      alt: img.alt,
+      category: img.category || "",
+      span: "",
+    })) || []
+
+  // Show every Sanity photo, plus any fallback photo not yet migrated
+  // (matched by caption), so adding photos one at a time doesn't make
+  // the rest of the gallery disappear.
+  const sanityAlts = new Set(
+    sanityMapped.map((img) => img.alt.trim().toLowerCase())
+  )
+  const remainingFallback = fallbackGalleryImages.filter(
+    (img) => !sanityAlts.has(img.alt.trim().toLowerCase())
+  )
+  const galleryImages = [...sanityMapped, ...remainingFallback].map(
+    (img, i) => ({
+      ...img,
+      span:
+        i === 0
+          ? "lg:col-span-2 lg:row-span-2"
+          : i === 3
+            ? "lg:row-span-2"
+            : "",
+    })
+  )
 
   const [selectedImage, setSelectedImage] =
     useState<(typeof galleryImages)[0] | null>(null)

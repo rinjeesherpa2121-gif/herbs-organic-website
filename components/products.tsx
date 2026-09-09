@@ -361,22 +361,32 @@ export function Products({
   const [activeCategory, setActiveCategory] = useState("all")
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
 
-  const products: Product[] =
-    sanityProducts && sanityProducts.length > 0
-      ? sanityProducts.map((p) => ({
-          id: p._id,
-          name: p.name,
-          scientificName: p.scientificName || "",
-          category: p.category,
-          categoryLabel: p.categoryLabel || "",
-          description: p.description || "",
-          traditionalUse: p.traditionalUse || "",
-          preparation: p.preparation || "",
-          availability: p.availability || "",
-          badge: p.badge || "",
-          image: resolveImageSrc(p.image, "/placeholder.jpg"),
-        }))
-      : fallbackProducts
+  const sanityMapped: Product[] =
+    sanityProducts?.map((p) => ({
+      id: p._id,
+      name: p.name,
+      scientificName: p.scientificName || "",
+      category: p.category,
+      categoryLabel: p.categoryLabel || "",
+      description: p.description || "",
+      traditionalUse: p.traditionalUse || "",
+      preparation: p.preparation || "",
+      availability: p.availability || "",
+      badge: p.badge || "",
+      image: resolveImageSrc(p.image, "/placeholder.jpg"),
+    })) || []
+
+  // Show every Sanity product, plus any fallback product that hasn't
+  // been migrated into Sanity yet (matched by name, case-insensitive).
+  // This way, adding products one at a time in the Studio never makes
+  // the rest of the catalog disappear from the live site.
+  const sanityNames = new Set(
+    sanityMapped.map((p) => p.name.trim().toLowerCase())
+  )
+  const remainingFallback = fallbackProducts.filter(
+    (p) => !sanityNames.has(p.name.trim().toLowerCase())
+  )
+  const products: Product[] = [...sanityMapped, ...remainingFallback]
 
   const filteredProducts =
     activeCategory === "all"
