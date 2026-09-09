@@ -39,11 +39,13 @@ export function Header() {
         <nav className="flex items-center justify-between h-20">
 
           <Link href="#home" className="flex items-center gap-3">
-            <img
-              src="/logo.png"
-              alt="Herbs & Organic Logo"
-              className="h-14 w-auto"
-            />
+            <span className="h-14 w-14 overflow-hidden rounded-full">
+              <img
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/20b9c957-6fa3-44f2-a4fe-8f57d94dad11.JPG-D0iPDwQKibG3xXHKopLWowmTi5a3O1.jpeg"
+                alt="Herbs & Organic circular gold logo"
+                className="h-full w-full scale-[1.15] object-cover"
+              />
+            </span>
 
             <span className="font-serif text-xl font-semibold text-foreground tracking-wide">
               Herbs & Organic

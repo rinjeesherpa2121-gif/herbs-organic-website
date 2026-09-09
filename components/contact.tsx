@@ -94,8 +94,14 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                 {
                   icon: Phone,
                   label: "Phone",
-                  value: "+977 9851357595",
-                  href: "tel:+9779851357595",
+                  value: "+977 9851061880",
+                  href: "tel:+9779851061880",
+                },
+                {
+                  icon: Phone,
+                  label: "Phone",
+                  value: "+977 9860282933",
+                  href: "tel:+9779860282933",
                 },
                 {
                   icon: MapPin,
@@ -139,7 +145,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                 </a>
 
                 <a
-  href="https://wa.me/9779851357595"
+  href="https://wa.me/9779851061880"
   target="_blank"
   rel="noopener noreferrer"
   aria-label="WhatsApp"
