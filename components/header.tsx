@@ -43,7 +43,7 @@ export function Header() {
               <img
                 src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/20b9c957-6fa3-44f2-a4fe-8f57d94dad11.JPG-D0iPDwQKibG3xXHKopLWowmTi5a3O1.jpeg"
                 alt="Herbs & Organic circular gold logo"
-                className="h-full w-full scale-[1.35] object-cover"
+                className="h-full w-full scale-[1.15] object-cover"
               />
             </span>
 
